@@ -36,7 +36,8 @@ class Mypy(PythonLinter):
     """Provides an interface to mypy."""
 
     executable = "mypy"
-    regex = r'^[^:]+:(?P<line>\d+):((?P<col>\d+):)?\s*((?P<error>error)|(?P<warning>warning)):\s*(?P<message>.+)'
+    regex = r'^[^:]+:(?<!pyi:)(?P<line>\d+):((?P<col>\d+):)?\s*((?P<error>error)|(?P<warning>warning)):\s*(?P<message>.+)'
+    line_col_base = (1, 0)
     line_col_base = (1, 1)
     tempfile_suffix = 'py'
     default_type = const.WARNING

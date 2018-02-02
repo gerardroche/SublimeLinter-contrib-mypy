@@ -48,3 +48,6 @@ class TestRegex(unittest.TestCase):
                 'col': '0',
                 'warning': None,
                 'message': 'Cannot find module named \'PackageName.lib\''})
+
+    def test_pyi_are_excluded(self):
+        self.assertMatchIsNone('/home/code/.local/lib/mypy/typeshed/stdlib/1and3/logging/handlers.pyi:86:4: error: Return type becomes "Any" due to an unfollowed import')
