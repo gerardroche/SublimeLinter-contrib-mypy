@@ -36,7 +36,7 @@ class Mypy(PythonLinter):
     """Provides an interface to mypy."""
 
     executable = "mypy"
-    regex = r'^[^:]+:(?<!pyi:)(?P<line>\d+):((?P<col>\d+):)?\s*((?P<error>error)|(?P<warning>warning)):\s*(?P<message>.+)'
+    regex = r'^(?P<file>[^:]+):(?P<line>\d+):((?P<col>\d+):)?\s*((?P<error>error)|(?P<warning>warning)):\s*(?P<message>.+)'
     line_col_base = (1, 0)
     line_col_base = (1, 1)
     tempfile_suffix = 'py'
@@ -119,6 +119,17 @@ class Mypy(PythonLinter):
         version = tuple(int(g) for g in match.groups() if g)
         logger.info("mypy version: %s", version)
         return version
+
+    def split_match(self, match):
+        result = super().split_match(match)
+        # print('FILE =', self.view, self.view.id(), self.view.name(), self.view.file_name())
+        # print('R =', result, 'M =', result.match)
+        # print('M =', result.match.groupdict())
+        match_file_name = result.match.groupdict()['file']
+        if match_file_name != self.view.file_name():
+            return None
+
+        return result
 
 
 def _cleanup_tmpdirs():

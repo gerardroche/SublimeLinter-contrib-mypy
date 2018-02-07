@@ -26,6 +26,7 @@ class TestRegex(unittest.TestCase):
     def test_matches(self):
         self.assertMatch(
             '/path/to/package/module.py:18:4: error: No return value expected', {
+                'file': '/path/to/package/module.py',
                 'error': 'error',
                 'line': '18',
                 'col': '4',
@@ -34,6 +35,7 @@ class TestRegex(unittest.TestCase):
 
         self.assertMatch(
             '/path/to/package/module.py:40: error: "dict" is not subscriptable, use "typing.Dict" instead', {
+                'file': '/path/to/package/module.py',
                 'error': 'error',
                 'line': '40',
                 'col': None,
@@ -43,11 +45,12 @@ class TestRegex(unittest.TestCase):
     def test_tmp_files_that_have_no_file_extension(self):
         self.assertMatch(
             '/tmp/yoeai32h2:6:0: error: Cannot find module named \'PackageName.lib\'', {
+                'file': '/tmp/yoeai32h2',
                 'error': 'error',
                 'line': '6',
                 'col': '0',
                 'warning': None,
                 'message': 'Cannot find module named \'PackageName.lib\''})
 
-    def test_pyi_are_excluded(self):
-        self.assertMatchIsNone('/home/code/.local/lib/mypy/typeshed/stdlib/1and3/logging/handlers.pyi:86:4: error: Return type becomes "Any" due to an unfollowed import')
+    # def test_pyi_are_excluded(self):
+    #     self.assertMatchIsNone('/home/code/.local/lib/mypy/typeshed/stdlib/1and3/logging/handlers.pyi:86:4: error: Return type becomes "Any" due to an unfollowed import')
